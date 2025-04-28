@@ -47,7 +47,7 @@ pipeline {
             steps {
                 script {
                     sh "Source JAR format: i27-${env.APPLICATION_NAME}-${env.POM_VERSION}.${env.POM_PACKAGING}"
-                    sh "Destination JAR format: i27-${env.APPLICATION_NAME}-${currentBuild.number}-${BRANCH_NAME}-${env.POM_VERSION}.${env.POM_PACKAGING}"
+                    sh "Destination JAR format: i27-${env.APPLICATION_NAME}-${currentBuild.number}-${BRANCH_NAME}.${env.POM_PACKAGING}"
                 }
             }
         }
