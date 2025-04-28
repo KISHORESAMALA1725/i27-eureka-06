@@ -41,7 +41,6 @@ pipeline {
                 waitForQualityGate abortPipeline: true
             }
         }
-
     }
 
         stage ('BUILD_FORMAT') {
