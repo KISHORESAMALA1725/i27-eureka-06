@@ -70,7 +70,7 @@ pipeline {
         stage ('DEPLOY_TO_DOCKER') {
             steps {
                 echo " ***** Deploying to DEV env ***** "
-                withCredentials([usernamePassword(credentialsId: 'john_docker_vm_creds', usernameVariable: '$USERNAME', passwordVariable: '$PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: 'john_docker_vm_creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     script {
                         try {
                             sh "sshpass -p '$PASSWORD' -v ssh -o StrictHostKeyChecking=no '$USERNAME'@'$env.DOCKER_VM_IP' \"docker stop ${env.APPLICATION_NAME}-dev\""
