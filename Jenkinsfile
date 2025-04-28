@@ -12,8 +12,12 @@ pipeline {
         APPLICATION_NAME = "eureka"
         POM_VERSION = readMavenPom().getVersion()
         POM_PACKAGING = readMavenPom().getPackaging()
+        //DOCKER REPO INFO
         DOCKER_HUB = "docker.io/kishoresamala84"
         DOCKER_CREDS = credentials('kishoresamala84_docker_creds')
+        //DOCKER VM INFO
+        DOCKER_VM_IP = "35.245.49.208"
+        // JOHN_DOCKER_VM_CREDS = credentials('john_docker_vm_creds')
     }
 
     stages {
@@ -59,6 +63,24 @@ pipeline {
                     sh "docker build --no-cache --build-arg JAR_SOURCE=i27-${env.APPLICATION_NAME}-${env.POM_VERSION}.${env.POM_PACKAGING} -t ${env.DOCKER_HUB}/${env.APPLICATION_NAME}:${GIT_COMMIT} ./.cicd"
                     sh "docker login -u ${env.DOCKER_CREDS_USR} -p ${env.DOCKER_CREDS_PSW}"
                     sh "docker push ${env.DOCKER_HUB}/${env.APPLICATION_NAME}:${GIT_COMMIT}"
+                }
+            }
+        }
+
+        stage ('DEPLOY_TO_DOCKER') {
+            steps {
+                echo " ***** Deploying to DEV env ***** "
+                withCredentials([usernamePassword(credentialsID: 'john_docker_vm_creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    script {
+                        try {
+                            sh "sshpass -p '$PASSWORD' -v ssh -o StrictHostKeyChecking=no '$USERNAME'@'$env.DOCKER_VM_IP' \"docker stop ${env.APPLICATION_NAME}-dev\""
+                            sh "sshpass -p '$PASSWORD' -v ssh -o StrictHostKeyChecking=no '$USERNAME@'$env.DOCKER_VM_IP' \"docker rm ${env.APPLICATION_NAME}-dev\""
+                        }
+                        catch err {
+                            echo "Error Caught: $err"
+                        }
+                        sh "sshpass -p '$PASSWORD' -v -ssh -o StrictHostKeyChecking=no '$USERNAME'@'$env.DOCKER_VM_IP' \"docker container run -dit -p 8761:8761 --name ${env.APPLICATION_NAME}-dev-${env.DOCKER_HUB}:${GIT_COMMIT}\""
+                    }
                 }
             }
         }
