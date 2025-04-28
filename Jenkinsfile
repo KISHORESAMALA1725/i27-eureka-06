@@ -20,6 +20,29 @@ pipeline {
             }
         }
 
-        
+        stage ('SONARQUBE_SCANNER') {
+            steps {
+                withSonarQubeEnv('sonarqube'){
+                    sh """
+                        mvn clean verify sonar:sonar \
+                        -Dsonar.projectKey=i27-eureka-06 \
+                        -Dsonar.host.url=http://34.21.15.97:9000 \
+                        -Dsonar.login=sqa_0acf0f3c8f99b362f8d7b4ce6c7d9ec8d26db415
+                    """
+                }
+            }
+            timeout(time: 2, units: 'MINUTES'){
+                waitForQualityGate abortPipeline: true
+            }
+        }
+
+        stage ('BUILD_FORMAT') {
+            steps {
+                script {
+                    sh "Source JAR format: i27-${env.APPLICATION_NAME}-${env.POM_VERSION}.${env.POM_PACKAGING}"
+                    sh "Destination JAR format: i27-${env.APPLICATION_NAME}-${currentBuild.number}-${BRANCH_NAME}-${env.POM_VERSION}.${env.POM_PACKAGING}"
+                }
+            }
+        }
     }
 }
