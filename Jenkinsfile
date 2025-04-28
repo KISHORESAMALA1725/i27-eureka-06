@@ -3,6 +3,11 @@ pipeline {
         label 'k8s-slave'
     }
 
+    tools {
+        maven 'maven-3.8.8'
+        jdk-17 'jdk-17'
+    }
+
     environment {
         APPLICATION_NAME = "eureka"
         POM_VERSION = readMavenPom().getVersion()
