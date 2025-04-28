@@ -76,7 +76,7 @@ pipeline {
                             sh "sshpass -p '$PASSWORD' -v ssh -o StrictHostKeyChecking=no '$USERNAME'@'$env.DOCKER_VM_IP' \"docker stop ${env.APPLICATION_NAME}-dev\""
                             sh "sshpass -p '$PASSWORD' -v ssh -o StrictHostKeyChecking=no '$USERNAME@'$env.DOCKER_VM_IP' \"docker rm ${env.APPLICATION_NAME}-dev\""
                         }
-                        catch err {
+                        catch (err) {
                             echo "Error Caught: $err"
                         }
                         sh "sshpass -p '$PASSWORD' -v -ssh -o StrictHostKeyChecking=no '$USERNAME'@'$env.DOCKER_VM_IP' \"docker container run -dit -p 8761:8761 --name ${env.APPLICATION_NAME}-dev-${env.DOCKER_HUB}:${GIT_COMMIT}\""
