@@ -18,10 +18,12 @@ pipeline {
 
     stages {
         stage ('BUILD_STAGE') {
-            script {
-                echo " ***** Maven Build Stage ***** "
-                sh "mvn clean package -DskipTest=true"
-                archiveArtifacts 'target/*.jar'
+            steps {
+                script {
+                    echo " ***** Maven Build Stage ***** "
+                    sh "mvn clean package -DskipTest=true"
+                    archiveArtifacts 'target/*.jar'
+                }
             }
         }
 
@@ -35,11 +37,12 @@ pipeline {
                         -Dsonar.login=sqa_0acf0f3c8f99b362f8d7b4ce6c7d9ec8d26db415
                     """
                 }
-            }
-            timeout(time: 2, units: 'MINUTES'){
+                timeout(time: 2, units: 'MINUTES'){
                 waitForQualityGate abortPipeline: true
             }
         }
+
+    }
 
         stage ('BUILD_FORMAT') {
             steps {
