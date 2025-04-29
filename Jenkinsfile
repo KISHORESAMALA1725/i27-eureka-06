@@ -90,8 +90,8 @@ pipeline {
     post {
         success {
             script {
-                def Subject = "JOB IS SUCCESS !!! Job Name is =:-> [${env.JOB_NAME}] <<>> Build Number # is =:-> [${env.BUILD_NUMBER}] <<>> Status is =:-> [${currentBuild.currentResult}]"
-                def Body = "Job URL :=> ${env.BUILD_URL} \n\n" +
+                def subject = "JOB IS SUCCESS !!! Job Name is =:-> [${env.JOB_NAME}] <<>> Build Number # is =:-> [${env.BUILD_NUMBER}] <<>> Status is =:-> [${currentBuild.currentResult}]"
+                def body = "Job URL :=> ${env.BUILD_URL} \n\n" +
                         "Build_Number is :=> ${env.BUILD_NUMBER} \n\n" +
                         "Build_Status is :=> ${currentBuild.currentResult}"
                 sendEmailNotification('kishorecloud.1725@gmail.com', subject, body)            
@@ -100,8 +100,8 @@ pipeline {
 
         failure {
             script {
-                def Subject = "JOB FAILED !!! Job Name is =:-> [${env.JOB_NAME}] <<>> Build Number # is =:-> [${env.BUILD_NUMBER}] <<>> Status is =:-> [${currentBuild.currentResult}]"
-                def Body = "Job URL :=> ${env.BUILD_URL} \n\n" +
+                def subject = "JOB FAILED !!! Job Name is =:-> [${env.JOB_NAME}] <<>> Build Number # is =:-> [${env.BUILD_NUMBER}] <<>> Status is =:-> [${currentBuild.currentResult}]"
+                def body = "Job URL :=> ${env.BUILD_URL} \n\n" +
                         "Build_Number is :=> ${env.BUILD_NUMBER} \n\n" +
                         "Build_Status is :=> ${currentBuild.currentResult}"
                 sendEmailNotification('kishorecloud.1725@gmail.com', subject, body)            
