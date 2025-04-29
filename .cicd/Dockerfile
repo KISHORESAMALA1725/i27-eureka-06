@@ -1,8 +1,8 @@
 FROM openjdk:18
 
-RUN mkdir -p /opt/i27
+RUN mkdir -p /opt/i27/
 
-WORKDIR /opt/i27
+WORKDIR /opt/i27/
 
 ARG JAR_SOURCE
 
@@ -12,4 +12,4 @@ RUN chmod 777 /opt/i27
 
 EXPOSE 8761
 
-CMD ["java", "-jar", "/opt/i27/i27-eureka-jar"]
+CMD ["java", "-jar", "/opt/i27/i27-eureka.jar"]
