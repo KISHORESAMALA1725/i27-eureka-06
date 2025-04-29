@@ -90,7 +90,7 @@ pipeline {
     post {
         success {
             script {
-                def Subject = "JOB IS SUCCESS !!! Job Name is =:-> [${env.JOB_NAME}] <<>> Build Number # is =:-> [${env.BUILD_NUMBER}] <<>> Status is =:-> [${currentBuild.CurrentResult}]"
+                def Subject = "JOB IS SUCCESS !!! Job Name is =:-> [${env.JOB_NAME}] <<>> Build Number # is =:-> [${env.BUILD_NUMBER}] <<>> Status is =:-> [${currentBuild.currentResult}]"
                 def Body = "Job URL :=> ${env.BUILD_URL} \n\n" +
                         "Build_Number is :=> ${env.BUILD_NUMBER} \n\n" +
                         "Build_Status is :=> ${currentBuild.currentStatus}"
