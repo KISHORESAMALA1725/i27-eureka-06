@@ -17,7 +17,7 @@ pipeline {
         DOCKER_CREDS = credentials('kishoresamala84_docker_creds')
         //DOCKER VM INFO
         DOCKER_VM_IP = "35.245.49.208"
-        JOHN_CREDS = credentials('john_docker_vm_creds')
+        // JOHN_CREDS = credentials('john_docker_vm_creds')
     }
 
     stages {
