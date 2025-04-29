@@ -17,7 +17,7 @@ pipeline {
         DOCKER_CREDS = credentials('kishoresamala84_docker_creds')
         //DOCKER VM INFO
         DOCKER_VM_IP = "35.245.49.208"
-        // JOHN_DOCKER_VM_CREDS = credentials('john_docker_vm_creds')
+        JOHN_CREDS = credentials('john_docker_vm_creds')
     }
 
     stages {
@@ -43,9 +43,9 @@ pipeline {
                 }
                 timeout(time: 2, unit: 'MINUTES'){
                 waitForQualityGate abortPipeline: true
+                }
             }
         }
-    }
 
         stage ('BUILD_FORMAT') {
             steps {
@@ -73,13 +73,13 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'john_docker_vm_creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     script {
                         try {
-                            sh "sshpass -p '$PASSWORD' -v ssh -o StrictHostKeyChecking=no '$USERNAME'@'$env.DOCKER_VM_IP' \"docker stop ${env.APPLICATION_NAME}-dev\""
-                            sh "sshpass -p '$PASSWORD' -v ssh -o StrictHostKeyChecking=no '$USERNAME@'$env.DOCKER_VM_IP' \"docker rm ${env.APPLICATION_NAME}-dev\""
+                            sh "sshpass -p '$PASSWORD' -v ssh -o StrictHostKeyChecking=no '$USERNAME'@$DOCKER_VM_IP \"docker stop ${env.APPLICATION_NAME}-dev\""
+                            sh "sshpass -p '$PASSWORD' -v ssh -o StrictHostKeyChecking=no '$USERNAME'@$DOCKER_VM_IP \"docker rm ${env.APPLICATION_NAME}-dev\""
                         }
                         catch (err) {
                             echo "Error Caught: $err"
                         }
-                        sh "sshpass -p '$PASSWORD' -v ssh -o StrictHostKeyChecking=no '$USERNAME'@'$env.DOCKER_VM_IP' \"docker container run -dit -p 8761:8761 --name ${env.APPLICATION_NAME}-dev ${env.DOCKER_HUB}/${env.APPLICATION_NAME}:${GIT_COMMIT}\""
+                        sh "sshpass -p '$PASSWORD' -v ssh -o StrictHostKeyChecking=no '$USERNAME'@$DOCKER_VM_IP \"docker container run -dit -p 8761:8761 --name ${env.APPLICATION_NAME}-dev ${env.DOCKER_HUB}/${env.APPLICATION_NAME}:${GIT_COMMIT}\""
                         // sh "sshpass -p '$PASSWORD' -v ssh -o StrictHostKeyChecking=no '$USERNAME'@'$env.DOCKER_VM_IP' \"docker container run -dit -p 8761:8761 --name ${env.APPLICATION_NAME}-dev${env.DOCKER_HUB}:${GIT_COMMIT}\""
                     }
                 }
