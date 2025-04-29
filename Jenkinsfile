@@ -94,7 +94,7 @@ pipeline {
                 def Body = "Job URL :=> ${env.BUILD_URL} \n\n" +
                         "Build_Number is :=> ${env.BUILD_NUMBER} \n\n" +
                         "Build_Status is :=> ${currentBuild.currentStatus}"
-                sendEmailNotification('kishorecloud.1725@gmail.com', subject body)            
+                sendEmailNotification('kishorecloud.1725@gmail.com', subject, body)            
             }   
 
         }
