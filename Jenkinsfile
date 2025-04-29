@@ -86,4 +86,27 @@ pipeline {
             }
         }
     }
+
+    post {
+        success {
+            script {
+                def Subject = "JOB IS SUCCESS !!! Job Name is =:-> [${env.JOB_NAME}] <<>> Build Number # is =:-> [${env.BUILD_NUMBER}] <<>> Status is =:-> [${currentBuild.CurrentResult}]"
+                def Body = "Job URL :=> ${env.BUILD_URL} \n\n" +
+                        "Build_Number is :=> ${env.BUILD_NUMBER} \n\n" +
+                        "Build_Status is :=> ${currentBuild.currentStatus}"
+                sendEmailNotification('kishorecloud.1725@gmail.com', subject body)            
+            }   
+
+        }
+    }
+}
+
+/// METHODS ///
+
+ def sendEmailNotification(String recipient, String subject, String body) {
+    mail (
+        to: recipient,
+        subject: subject,
+        body: body
+    )
 }
